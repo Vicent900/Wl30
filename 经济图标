@@ -1,0 +1,24 @@
+import plotly.express as px
+import pandas as pd
+
+# 生成假设的示例数据
+data = {
+    "Date": pd.date_range(start="2010-01-01", periods=120, freq='M'),
+    "Short_Term_Yield": [0.1, 0.2, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.2, 0.1] * 12,
+    "Long_Term_Yield": [1.5, 1.6, 1.7, 1.8, 1.9, 1.8, 1.7, 1.6, 1.5, 1.4] * 12
+}
+
+# 生成 DataFrame
+df = pd.DataFrame(data)
+
+# 计算收益率倒挂程度
+df["Yield_Spread"] = df["Long_Term_Yield"] - df["Short_Term_Yield"]
+
+# 创建图表
+fig = px.line(df, x='Date', y=['Short_Term_Yield', 'Long_Term_Yield', 'Yield_Spread'],
+              labels={'value': 'Yield', 'variable': 'Type'},
+              title='US Treasury Yield Curve and Yield Spread')
+fig.update_layout(yaxis_title='Yield (%)', xaxis_title='Date')
+
+# 显示图表
+fig.show()
